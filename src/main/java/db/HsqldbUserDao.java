@@ -15,15 +15,28 @@ import kn145.prihodko.usermanagement.User;
 
 import org.dbunit.DatabaseTestCase;
 
-public class HsqldbUserDao implements UserDAO {
+class HsqldbUserDao implements UserDAO {
 
 	private static final String SELECT_ALL_QUERY = "SELECT id, firstname, lastname, dateofbirth FROM users";
 	private static final String INSERT_QUERY = "INSERT INTO users (firstname, lastname, dateofbirth) VALUES (?, ?, ?)";
 	private ConnectionFactory connectionFactory;
 	
+	public HsqldbUserDao(){
+		
+	}
+	
 	public HsqldbUserDao(ConnectionFactory connectionFactory){
 		this.connectionFactory = connectionFactory;
 	}
+	
+	public ConnectionFactory getConnectionFactory() {
+		return connectionFactory;
+	}
+	
+	public void setConnectionFactory(ConnectionFactory connectionFactory) {
+		this.connectionFactory = connectionFactory;
+	}
+	
 	@Override
 	public User create(User user) throws DatabaseException {
 		try {
