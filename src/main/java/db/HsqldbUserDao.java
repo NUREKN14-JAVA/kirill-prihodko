@@ -1,7 +1,7 @@
 package db;
 
 import java.util.Collection;
-
+import java.util.LinkedList;
 import java.lang.Exception;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import kn145.prihodko.usermanagement.User;
 
@@ -16,6 +17,7 @@ import org.dbunit.DatabaseTestCase;
 
 public class HsqldbUserDao implements UserDAO {
 
+	private static final String SELECT_ALL_QUERY = "SELECT id, firstname, lastname, dateofbirth FROM users";
 	private static final String INSERT_QUERY = "INSERT INTO users (firstname, lastname, dateofbirth) VALUES (?, ?, ?)";
 	private ConnectionFactory connectionFactory;
 	
@@ -71,8 +73,27 @@ public class HsqldbUserDao implements UserDAO {
 
 	@Override
 	public Collection findAll() throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Collection result = new LinkedList();
+		
+		try {
+			Connection connection = connectionFactory.createConnection();
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(SELECT_ALL_QUERY);
+			while(resultSet.next())	{
+				User user = new User();
+				user.setId(new Long(resultSet.getLong(1)));
+				user.setFirstName(resultSet.getString(2));
+				user.setLastName(resultSet.getString(3));
+				user.setDateOfBirthd(resultSet.getDate(4));
+				result.add(user);
+			}
+		} catch (DatabaseException e) {
+			throw e;
+		} catch (SQLException e) {
+			throw new DatabaseException(e);
+		}
+		return result;
 	}
 
 }
