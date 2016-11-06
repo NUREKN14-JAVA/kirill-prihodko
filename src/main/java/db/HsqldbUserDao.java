@@ -12,7 +12,7 @@ import java.sql.Statement;
 
 import kn145.prihodko.usermanagement.User;
 
-class HsqldbUserDao implements UserDAO {
+public class HsqldbUserDao implements UserDAO {
 
 	private static final String SELECT_ALL_QUERY = "SELECT id, firstname, lastname, dateofbirth FROM users";
 	private static final String INSERT_QUERY = "INSERT INTO users (firstname, lastname, dateofbirth) VALUES (?, ?, ?)";
@@ -108,13 +108,13 @@ class HsqldbUserDao implements UserDAO {
 	@Override
 	public User find(Long id) throws DatabaseException {
 		Connection connection = connectionFactory.createConnection();
+		User user = new User();
 		try {
         	PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
     		statement.setLong(1, id);
     		ResultSet res = statement.executeQuery();
             if(res.next()) {
-            	User user = new User();
-	            user.setId(res.getLong(1));
+            	user.setId(res.getLong(1));
 	            user.setFirstName(res.getString(2));
 	            user.setLastName(res.getString(3));
 	            user.setDateOfBirthd(res.getDate(4));
@@ -126,7 +126,7 @@ class HsqldbUserDao implements UserDAO {
         } catch (SQLException e) {
             throw new DatabaseException(e);
         }
-       return null;
+       return user;
     }
 
 	@Override

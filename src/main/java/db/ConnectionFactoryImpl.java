@@ -18,6 +18,9 @@ public class ConnectionFactoryImpl implements ConnectionFactory {
 		this.user = user;
 	}
 
+	public ConnectionFactoryImpl(){
+		
+	}
 	@Override
 	public Connection createConnection() throws DatabaseException {
 		String url = "jdbc:hsqldb:file:db/usermanagement";

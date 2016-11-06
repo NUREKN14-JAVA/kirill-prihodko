@@ -10,6 +10,8 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
+import org.junit.Before;
+import org.junit.Test;
 
 import kn145.prihodko.usermanagement.User;
 
@@ -18,10 +20,13 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 	private HsqldbUserDao dao;
 	private ConnectionFactory connectionFactory;
 	
+	@Before
 	public void setUp() throws Exception {
 		super.setUp();
+		connectionFactory = new ConnectionFactoryImpl();
 		dao = new HsqldbUserDao(connectionFactory);
 	}
+	@Test
 	public void testCreate() {
 		try {
 			User user = new User();
@@ -37,7 +42,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 			fail(e.toString());
 		}
 	}
-
+	@Test
 	public void testFindAll() {
 		try {
 			Collection<User> collection = dao.findAll();
@@ -49,7 +54,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 			fail(e.toString());
 		}
 	}
-	
+	@Test
 	public void testFind()	{
 		 try {
 	            User user = dao.find(1000L);
@@ -62,20 +67,19 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 	        }
 		
 	}
-	
+	@Test
 	public void testDelete() {
 		try {
 			User user = dao.find(new Long(1000));
 			dao.delete(user);
 			user = dao.find(new Long(1000));
-			System.out.println(user.getId());
 			assertNull("User was not deleted", user.getId());
 		} catch (DatabaseException de) {
 			de.printStackTrace();
 			fail(de.toString());
 		}
 	}
-
+	@Test
 	public void testUpdate() {
 		Long testing_id = new Long(1000);
     	Calendar calendar = Calendar.getInstance();
@@ -103,7 +107,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 
 	@Override
 	protected IDatabaseConnection getConnection() throws Exception {
-		connectionFactory = new ConnectionFactoryImpl("org.hsqldb.jdbcDriver", "jdbc:hsqldb:file:db/usermanagement", "sa", "");
+		connectionFactory = new ConnectionFactoryImpl();
 		return new DatabaseConnection(connectionFactory.createConnection());
 	}
 

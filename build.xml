@@ -27,6 +27,9 @@
 			</classpath>
 			<formatter type="plain"/>
 			<test name="kn145.prihodko.usermanagement.UserTest"></test>
-		</junit>
+			<test name="db.DaoFactoryTest"></test>
+			<test name="db.HsqldbUserDaoTest"></test>
+		</junit>	
+		
 	</target>
 </project>
