@@ -9,7 +9,6 @@
 	<delete dir="${build-dir}"/>
 	</target>
 	
-
 	<target name="init">
 	<mkdir dir="${build-dir}"/>
 	</target>
