@@ -48,21 +48,17 @@ public class DetailsPanel extends JPanel implements ActionListener {
 	private void initialize() {
 		
 		try {
-			user = parent.getDao().find(iD);
+			user = parent.getDao().find((Long)iD);
 			lastName = user.getLastName();
 			firstName = user.getFirstName();
-			age = (Long) user.getAge();
+			age =  Long.valueOf(user.getAge());
 			DateFormat df = new SimpleDateFormat(Messages.getString("DetailsPanel.0")); //$NON-NLS-1$
 			dateOfBirth = df.format(user.getDateOfBirthd());
-		
-			
-			
-
-		
-		this.setName("detailsPanel");  //$NON-NLS-1$
-		this.setLayout(new BorderLayout());
-		this.add(getFieldPanel(), BorderLayout.NORTH);
-		this.add(getButtonPanel(), BorderLayout.SOUTH);
+	
+			this.setName("detailsPanel");  //$NON-NLS-1$
+			this.setLayout(new BorderLayout());
+			this.add(getFieldPanel(), BorderLayout.NORTH);
+			this.add(getButtonPanel(), BorderLayout.SOUTH);
 		} catch (DatabaseException e) {
 			
 			this.setVisible(false);
