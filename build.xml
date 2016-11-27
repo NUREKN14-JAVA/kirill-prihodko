@@ -1,23 +1,25 @@
-<project name="usermanagement" basedir="." default="test">
+<project name="usermanagement" basedir = "." default="test">
+
+	<property name = "main-java-dir" value = "${basedir}/src/main/java"/>
+	<property name = "build-dir" value = "${basedir}/bin"/>
+	<property name = "test-java-dir" value = "${basedir}/src/test/java"/>
 	
-	<property name="main-java-dir" value="${basedir}/src/main/java"/>
-	<property name="test-java-dir" value="${basedir}/src/test/java"/>
-	<property name="build-dir" value="${basedir}/bin"/>
 	
 	<target name="clean">
-		<delete dir="${build-dir}"/>
+	<delete dir="${build-dir}"/>
 	</target>
 	
+
 	<target name="init">
-		<mkdir dir="${build-dir}"/>
+	<mkdir dir="${build-dir}"/>
 	</target>
 	
 	<target name="compile" depends="init">
-		<javac srcdir="${main-java-dir}" destdir="${build-dir}" />
+	<javac srcdir="${main-java-dir}" destdir="${build-dir}"/>
 	</target>
 	
 	<target name="test-compile">
-		<javac srcdir="${test-java-dir}" destdir="${build-dir}" />
+	<javac srcdir="${test-java-dir}" destdir="${build-dir}"/>
 	</target>
 	
 	<target name="test" depends="test-compile">
@@ -26,10 +28,9 @@
 				<pathelement location="${build-dir}"/>
 			</classpath>
 			<formatter type="plain"/>
-			<test name="kn145.prihodko.usermanagement.UserTest"></test>
-			<test name="db.DaoFactoryTest"></test>
-			<test name="db.HsqldbUserDaoTest"></test>
-		</junit>	
-		
+			<test name="kn145.prihodko.UserTest"></test>
+			<test name="kn145.prihodko.db.DaoFactoryTest"></test>
+			<test name="kn145.prihodko.db.HsqldbUserDaoTest"></test>
+		</junit>
 	</target>
 </project>

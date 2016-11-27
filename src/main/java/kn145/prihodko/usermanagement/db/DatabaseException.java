@@ -1,4 +1,4 @@
-package db;
+package kn145.prihodko.usermanagement.db;
 
 public class DatabaseException extends Exception {
 
