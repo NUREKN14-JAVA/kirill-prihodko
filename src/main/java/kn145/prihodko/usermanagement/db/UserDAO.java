@@ -1,4 +1,4 @@
-package db;
+package kn145.prihodko.usermanagement.db;
 
 import java.util.Collection;
 
