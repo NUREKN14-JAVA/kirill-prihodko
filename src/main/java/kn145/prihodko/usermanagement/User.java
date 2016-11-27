@@ -36,7 +36,7 @@ public class User {
 	public Object getFullName() {
 		return getLastName() + ", " + getFirstName();
 	}
-	public Object getAge() {
+	public int getAge() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
 		int currentYear = calendar.get(Calendar.YEAR);
