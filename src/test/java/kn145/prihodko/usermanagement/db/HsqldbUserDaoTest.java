@@ -33,8 +33,8 @@ public class HsqldbUserDaoTest extends DatabaseTestCase  {
 	public void testCreate() {
 		try {
 			User user = new User();
-			user.setFirstName("Daniil");
-			user.setLastName("Karpenko");
+			user.setFirstName("Kirill");
+			user.setLastName("Prihodko");
 			user.setDateOfBirthd(new Date());
 			assertNull(user.getId());
 			user = dao.create(user);
@@ -53,8 +53,8 @@ public class HsqldbUserDaoTest extends DatabaseTestCase  {
 		try{
 			
 		User user = new User();
-		user.setFirstName("Daniil");
-		user.setLastName("Karpenko");
+		user.setFirstName("Kirill");
+		user.setLastName("Prihodko");
 		user.setDateOfBirthd(new Date());
 		user = dao.create(user);
 		Long id = user.getId();
@@ -114,8 +114,8 @@ public class HsqldbUserDaoTest extends DatabaseTestCase  {
 			user=dao.find(id);
 			java.sql.Date date = new java.sql.Date(user.getDateOfBirthd().getTime());
 			
-			assertEquals(user.getFirstName(), "John");
-			assertEquals(user.getLastName(), "Doe");
+			assertEquals(user.getFirstName(), "Donald");
+			assertEquals(user.getLastName(), "Trump");
 			assertEquals(user.getDateOfBirthd().toString(),date.toString());
 		}catch (DatabaseException e){
 			e.printStackTrace();
