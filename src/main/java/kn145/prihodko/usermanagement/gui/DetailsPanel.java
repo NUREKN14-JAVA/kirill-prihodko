@@ -1,168 +1,103 @@
 package kn145.prihodko.usermanagement.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import kn145.prihodko.usermanagement.User;
-import kn145.prihodko.usermanagement.db.DatabaseException;
-import kn145.prihodko.usermanagement.util.Messages;
 
-public class DetailsPanel extends JPanel implements ActionListener {
-
-	private MainFrame parent;
-	private JPanel buttonPanel;
-	private JPanel fieldPanel;
-	private JButton cancelButton;
-	private JButton okButton;
-	private JTextField dateOfBirthField;
-	private JTextField lastNameField;
-	private JTextField firstNameField;
-	private JTextField ageField;
-	private Color bgColor;
-	private Long iD;
-	private String lastName;
-	private String firstName;
-
-	private String dateOfBirth;
-	private Long age;
-	private User user = new User();
+public class DetailsPanel extends StandardPanel implements ActionListener {
 	
-	public DetailsPanel (MainFrame parent, Long id){
-		this.parent = parent;
-		iD = id;		
+	private static final long serialVersionUID = 1L;
+	private JPanel buttonPanel;
+	private JPanel userInfoPanel;
+	private JLabel firstNameValueLabel;
+	private JLabel dateOfBirthValueLabel;
+	private JLabel lastNameValueLabel;
+	
+	
+	public DetailsPanel(MainFrame parent) {
+		super(parent);
 		initialize();
 	}
 
-	private void initialize() {
-		
-		try {
-			user = parent.getDao().find((Long)iD);
-			lastName = user.getLastName();
-			firstName = user.getFirstName();
-			age =  Long.valueOf(user.getAge());
-			DateFormat df = new SimpleDateFormat(Messages.getString("DetailsPanel.0")); //$NON-NLS-1$
-			dateOfBirth = df.format(user.getDateOfBirthd());
-	
-			this.setName("detailsPanel");  //$NON-NLS-1$
-			this.setLayout(new BorderLayout());
-			this.add(getFieldPanel(), BorderLayout.NORTH);
-			this.add(getButtonPanel(), BorderLayout.SOUTH);
-		} catch (DatabaseException e) {
-			
-			this.setVisible(false);
+   private void initialize() {
+       this.setName("detailsPanel");  //$NON-NLS-1$
+       setLayout(new BorderLayout());
+       this.add(getUserInfoPanel(), BorderLayout.NORTH);
+       this.add(getButtonPanel(), BorderLayout.SOUTH);
+       
+   }
+   
+	private JPanel getUserInfoPanel() {
+		if (userInfoPanel == null) {
+			userInfoPanel = new JPanel();
+			userInfoPanel.setLayout(new GridLayout(4,2));
+			userInfoPanel.add(new JLabel("Detailed Info About User"));
+			userInfoPanel.add(new JLabel(""));
+			addLine(userInfoPanel, "First Name", getfirstNameValueLabel());
+			addLine(userInfoPanel, "Last Name", getLastNameValueLabel());
+			addLine(userInfoPanel, "Date of Birth", getDateOfBirthValueLabel());
 		}
-				
+	return userInfoPanel;
+}
+
+	private void addLine(JPanel panel, String labelText, JLabel valueLabel) {
+		 	JLabel label = new JLabel();
+	        label.setText(labelText);
+	        panel.add(label);
+	        panel.add(valueLabel);
 	}
 
 	private JPanel getButtonPanel() {
-		if(buttonPanel == null){
-			buttonPanel = new JPanel();
-			
-			buttonPanel.add(getCancelButton(), null);
+		if (buttonPanel == null) {
+            buttonPanel = new JPanel();
+            buttonPanel.add(getOkButton());
 		}
 		return buttonPanel;
-	}
+}
 
-	private JButton getCancelButton() {
-		if(cancelButton == null){
-			cancelButton = new JButton();
-			cancelButton.setName("cancelButton");  //$NON-NLS-1$
-			cancelButton.setText(Messages.getString("AddPanel.close"));  //$NON-NLS-1$
-			cancelButton.setActionCommand("cancel");  //$NON-NLS-1$
-			cancelButton.addActionListener(this);
+	public void setUpUserDetails(User user) {
+		getfirstNameValueLabel().setText(user.getFirstName());
+		getLastNameValueLabel().setText(user.getLastName());
+		getDateOfBirthValueLabel().setText(user.getDateOfBirthd().toString());
+		
+	}
+	private JLabel getfirstNameValueLabel() {
+		if (firstNameValueLabel == null) {
+			firstNameValueLabel = new JLabel();
+			firstNameValueLabel.setName("firstName");
 		}
-		return cancelButton;
-	}
-
-
-
-	private JPanel getFieldPanel() {
-		if(fieldPanel == null){
-			fieldPanel = new JPanel();
-			fieldPanel.setLayout(new GridLayout(4,2));
-			addLabeledField(fieldPanel,Messages.getString("AddPanel.first_name"),getFirstNameField());  //$NON-NLS-1$
-			addLabeledField(fieldPanel,Messages.getString("AddPanel.last_name"),getLastNameField());  //$NON-NLS-1$
-			addLabeledField(fieldPanel,Messages.getString("AddPanel.date_of_birthday"),getDateOfBirthField());  //$NON-NLS-1$
-			addLabeledField(fieldPanel,Messages.getString("DetailsPanel.details_age"),getAgeField());  //$NON-NLS-1$
-		}
-		return fieldPanel;
-	}
-
-	private JTextField getDateOfBirthField() {
-		if(dateOfBirthField == null){
-			dateOfBirthField = new JTextField();
-			dateOfBirthField.setName("dateOfBirthField");  //$NON-NLS-1$
-			dateOfBirthField.setText(dateOfBirth);
-		}
-		return dateOfBirthField;
-	}
-
-	private JTextField getLastNameField() {
-		if(lastNameField == null){
-			lastNameField = new JTextField();
-			lastNameField.setName("lastNameField");  //$NON-NLS-1$
-			lastNameField.setText(lastName);
-		}
-		return lastNameField;
-	}
-
-	private void addLabeledField(JPanel panel, String labelText,
-			JTextField textField) {
-		JLabel label = new JLabel(labelText);
-		label.setLabelFor(textField);
-		panel.add(label);
-		panel.add(textField);
-	}
-
-	private JTextField getFirstNameField() {
-		if(firstNameField == null){
-			firstNameField = new JTextField();
-			firstNameField.setName("firstNameField");  //$NON-NLS-1$
-			firstNameField.setText(firstName);
-		}
-		return firstNameField;
-	}
-
-	private JTextField getAgeField() {
-		if(ageField == null){
-			ageField = new JTextField();
-			ageField.setName("ageField");  //$NON-NLS-1$
-			ageField.setText(age.toString());
-		}
-		return ageField;
+		return firstNameValueLabel;
 	}
 	
+	private JLabel getDateOfBirthValueLabel() {
+		if (dateOfBirthValueLabel == null) {
+			dateOfBirthValueLabel = new JLabel();
+			dateOfBirthValueLabel.setName("dateOfBirth");
+		}
+		return dateOfBirthValueLabel;
+	}
+
+	private JLabel getLastNameValueLabel() {
+		if (lastNameValueLabel == null){
+			lastNameValueLabel = new JLabel();
+			lastNameValueLabel.setName("lastName");
+		}
+		return lastNameValueLabel;
+	}
+
+	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		
-		clearFields();
-		this.setVisible(false);
-		parent.showBrowsePanel();
+		if ("ok".equals(e.getActionCommand())) {
+	        this.setVisible(false);
+	        getParentFrame().showBrowsePanel();
+		}
 		
 	}
 
-	private void clearFields() {
-		getFirstNameField().setText(Messages.getString("DetailsPanel.2"));  //$NON-NLS-1$
-		//getFirstNameField().setBackground(bgColor);
-		
-		getLastNameField().setText(Messages.getString("DetailsPanel.3"));  //$NON-NLS-1$
-		//getLastNameField().setBackground(bgColor);
-		
-		getDateOfBirthField().setText(Messages.getString("DetailsPanel.4"));  //$NON-NLS-1$
-	//	getDateOfBirthField().setBackground(bgColor);
-	
-	}
-	
 }
