@@ -1,31 +1,24 @@
 package kn145.prihodko.usermanagement.db;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import junit.framework.TestCase;
-import kn145.prihodko.usermanagement.db.DaoFactory;
-import kn145.prihodko.usermanagement.db.UserDAO;
 
 public class DaoFactoryTest extends TestCase {
 
-	@Before
-	public void setUp() throws Exception {
-	}
+    @Before
+    public void setUp() throws Exception {
+        super.setUp();
+    }
 
-	@Test
-	public void testGetUserDAO() {
-		try {
-			DaoFactory daoFactory = DaoFactory.getInstance();
-			assertNotNull("DaoFactory instance is null.", daoFactory);
-			UserDAO userDAO = daoFactory.getUserDao();
-			assertNotNull("UserDAO instance is null", userDAO);
-		} catch (RuntimeException e) {
-			e.printStackTrace();
-			fail(e.toString());
-		}
-	}
+    @Test
+    public void testGetUserDao() {
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        assertNotNull("Dao Factory is null", daoFactory);
+        UserDao userDao = daoFactory.getUserDao();
+        assertNotNull("User Dao is null", userDao);
+        
+    }
 
 }
